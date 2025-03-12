@@ -54,9 +54,14 @@ def start_scheduler():
 # JWT 토큰을 검증하고 사용자 아이디를 반환하는 헬퍼 함수
 def get_user_from_jwt():
     access_token = session.get("jwt_access")
+    refresh_token = request.cookies.get("refresh_token")
     if not access_token:
-        print("디버깅-엑세스 토큰 없음")
-        return None
+        if refresh_token:
+            print("디버깅-엑세스 토큰 없음/ 재발급시도")
+            return "EXPIRED✍"
+        else:
+            return None
+        
     try:
         print("디버깅- 토큰 디코딩 시도")
         access_payload = jwt.decode(access_token, jwt_secret_key_access, algorithms=['HS256'])
@@ -213,7 +218,7 @@ def login():
 def refresh():
     # 클라이언트의 리프레쉬 토큰 가져오기
     client_refresh_token = request.cookies.get("refresh_token")
-    
+
     try:
         payload = jwt.decode(client_refresh_token, jwt_secret_key_refresh, algorithms=["HS256"])
         userid = payload.get("id")
