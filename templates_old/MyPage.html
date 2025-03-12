@@ -1,0 +1,44 @@
+{% extends "Main.html" %} {% block title %}마이페이지{% endblock %} {% block
+content %}
+
+<!-- 오늘 공부 시간 안내 -->
+<div class="box has-text-centered">
+  <p class="is-size-4">
+    <strong>{{ username }}</strong>님의 오늘의 공부시간은
+    <strong>{{ today_hours }}시간 {{ today_minutes }}분</strong> 입니다.
+  </p>
+</div>
+
+<!-- 주간 목표 & 진행률 -->
+<div class="box">
+  <p class="mb-3">이 주의 목표: <strong>{{ weekly_goal }}</strong> 시간</p>
+
+  <!-- 진행률 바 -->
+  <progress
+    class="progress is-success"
+    value="{{ progress_percent }}"
+    max="100"
+  >
+    {{ progress_percent }}%
+  </progress>
+
+  <div class="has-text-centered mt-2">
+    목표까지 <strong>{{ progress_percent }}%</strong> 달성하셨습니다!! 👊
+    <br />
+    이번 주<strong>⏰{{week_study_hour}} 시간 {{week_study_minute}}분</strong>
+    공부하셨습니다.
+  </div>
+</div>
+
+<!-- 목표 설정 & 순위 -->
+<div class="columns mt-4">
+  <div class="column">
+    <div class="box has-text-left">
+      현재 정글 <strong>{{ rank }}등</strong> 입니다
+    </div>
+  </div>
+  <div class="column has-text-right">
+    <a href="/goal" class="button is-link">이번 주 목표 설정</a>
+  </div>
+</div>
+{% endblock %}

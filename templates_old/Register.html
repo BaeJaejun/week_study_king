@@ -1,0 +1,91 @@
+{% extends "Main.html" %} {% block title %}회원가입{% endblock %} {% block
+content %}
+<div class="box has-text-centered">
+  <form method="post" action="/register">
+    <div class="field">
+      <label class="label has-text-left">이름</label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          name="username"
+          placeholder="이름을 입력하세요"
+          required
+        />
+      </div>
+    </div>
+    <div class="field">
+      <label class="label has-text-left">ID</label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          name="userid"
+          id="userid"
+          placeholder="아이디를 입력하세요"
+          required
+        />
+      </div>
+      <!--  중복 결과 메시지 -->
+      <p id="id-check-result" class="help"></p>
+    </div>
+
+    <div class="field">
+      <label class="label has-text-left">PW</label>
+      <div class="control">
+        <input
+          class="input"
+          type="password"
+          name="password"
+          placeholder="비밀번호를 입력하세요"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label has-text-left">PW 재입력</label>
+      <div class="control">
+        <input
+          class="input"
+          type="password"
+          name="confirm_password"
+          placeholder="비밀번호를 다시 입력하세요"
+          required
+        />
+      </div>
+    </div>
+
+    <!-- 회원가입 버튼만 -->
+    <div class="field mt-5">
+      <div class="control">
+        <button type="submit" class="button is-link is-fullwidth">
+          회원가입
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<script>
+  $("#userid").on("blur", function () {
+    const userid = $(this).val();
+
+    if (!userid) return; // 공백이면 중단
+
+    $.ajax({
+      type: "GET",
+      url: "/check_userid", // ✅ Flask에서 이 URL 처리해야 함
+      data: { userid: userid },
+      success: function (response) {
+        const msg = $("#id-check-result");
+        if (response.exists) {
+          msg.text("❌ 이미 존재하는 ID입니다.").css("color", "red");
+        } else {
+          msg.text("✅ 사용 가능한 ID입니다.").css("color", "green");
+        }
+      },
+    });
+  });
+</script>
+
+{% endblock %}

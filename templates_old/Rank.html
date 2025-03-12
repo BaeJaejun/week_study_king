@@ -1,0 +1,81 @@
+{% extends "Main.html" %} {% block title %}홈 - 공부짱{% endblock %} {% block
+content %}
+
+<!-- 랭킹 영역 -->
+<div class="box">
+  <div class="columns is-mobile is-vcentered mb-3">
+    <div class="column has-text-left">
+      <b class="is-size-3">이 주의 공부짱들✍</b>
+    </div>
+    <div class="column has-text-right">
+      <span class="is-size-5">매 주 월요일 초기화</span>
+      <span class="is-zise-5"></span>
+    </div>
+  </div>
+  <hr />
+
+  <div class="ranking-box content">
+    <ol>
+      {% if rankings %} {% for user in rankings %}
+      <div class="columns is-mobile is-vcentered is-gapless">
+        <div class="column is-narrow">
+          <strong>{{ loop.index }}위</strong>ㅤㅤㅤㅤㅤㅤ
+        </div>
+        <div class="column is-two-third has-text-weight-semibold">
+          {{ user.username }}
+        </div>
+        <div class="column">
+          {{ user.hours }}시간 {{ user.minutes }}분 {{ user.seconds }}초
+        </div>
+      </div>
+
+      {% endfor %} {% else %}
+      <p>데이터가 없습니다</p>
+      {% endif %}
+    </ol>
+  </div>
+</div>
+
+<!-- 입실 / 퇴실 버튼 -->
+<form method="post" action="/check_in_out">
+  <div class="columns mt-4">
+    <div class="column">
+      <button
+        class="button is-dark is-fullwidth"
+        type="submit"
+        name="action"
+        value="checkin"
+        {%
+        if
+        not
+        can_checkin
+        %}disabled{%
+        endif
+        %}
+      >
+        입실
+      </button>
+    </div>
+    <div class="column">
+      <button
+        class="button is-dark is-fullwidth"
+        type="submit"
+        name="action"
+        value="checkout"
+        {%
+        if
+        not
+        can_checkout
+        %}disabled{%
+        endif
+        %}
+      >
+        퇴실
+      </button>
+    </div>
+  </div>
+</form>
+
+{% if not is_logged_in %}
+<p class="has-text-centered has-text-info mt-3">로그인이 필요합니다.</p>
+{% endif %} {% endblock %}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}이 주의 공부짱{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bulma CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .ranking-box {
+        max-height: 250px;
+        overflow-y: auto;
+      }
+      .container.box {
+        border: 3px solid black;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 00);
+      }
+      .box {
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0);
+      }
+      hr {
+        padding: 0;
+        border: none;
+        border-top: medium double #8c8c8c;
+        color: #8c8c8c;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="section">
+      <!-- 공통 상단 타이틀 + 로그인 -->
+      <div class="level">
+        <div class="level-left">
+          <a href="/" class="title">이 주의 공부짱👍👍👍</a>
+        </div>
+        <div class="level-right">
+          {% if request.path not in ['/login', '/register'] %} {% if
+          session.get("userid") %}
+          <a href="/mypage" class="button is-primary is-light mr-2"
+            >마이페이지</a
+          >
+          <a href="/logout" class="button is-danger is-outlined">로그아웃</a>
+          {% else %}
+
+          <a href="/login" class="button is-link is-outlined">로그인</a>
+          {% endif %} {% endif %}
+        </div>
+      </div>
+      <hr />
+
+      <!-- 개별 페이지 콘텐츠 영역 -->
+      <div class="container box">{% block content %}{% endblock %}</div>
+    </section>
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <script>
+      alert("{{ messages[0] }}");
+    </script>
+    {% endif %} {% endwith %}
+  </body>
+</html>
